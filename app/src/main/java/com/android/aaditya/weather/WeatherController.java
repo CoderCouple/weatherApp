@@ -1,7 +1,5 @@
 package com.android.aaditya.weather;
 
-import com.android.aaditya.weather.model.Day;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
