@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.CallAdapter;
-import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -23,20 +21,21 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class ApiModule {
 
-    private static ApiModule sSoleInstance;
+    private static ApiModule apiModule;
+
     private ApiModule(){
         //Prevent form the reflection api.
-        if (sSoleInstance != null){
+        if (apiModule != null){
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }
     }
 
     public static ApiModule getInstance(){
-        if (sSoleInstance == null){ //if there is no instance available... create new one
-            sSoleInstance = new ApiModule();
+        if (apiModule == null){ //if there is no instance available... create new one
+            apiModule = new ApiModule();
         }
 
-        return sSoleInstance;
+        return apiModule;
     }
 
     public WeatherService getApi() {
@@ -47,22 +46,6 @@ public class ApiModule {
                 .build();
 
         return retrofit.create(WeatherService.class);
-    }
-
-    public WeatherService provideApi(
-            OkHttpClient client,
-            CallAdapter.Factory callAdapterFactory) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.API_BASE_URL)
-                .client(client)
-                .addCallAdapterFactory(callAdapterFactory)
-                .build();
-
-        return retrofit.create(WeatherService.class);
-    }
-
-    public CallAdapter.Factory provideCallAdapterFactory() {
-        return RxJava2CallAdapterFactory.create();
     }
 
     public OkHttpClient provideOkHttpClient(List<Interceptor> interceptors) {

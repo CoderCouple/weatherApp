@@ -1,5 +1,7 @@
 package com.android.aaditya.weather.model;
 
+import org.joda.time.DateTime;
+
 /**
  * Created by aaditya on 10/20/17.
  */
@@ -7,7 +9,7 @@ package com.android.aaditya.weather.model;
 public class ForecastDay {
 
     private Weather weather;
-    private String dateTime;
+    private DateTime dateTime;
 
     public Weather getWeather() {
         return weather;
@@ -17,11 +19,11 @@ public class ForecastDay {
         this.weather = weather;
     }
 
-    public String getDateTime() {
+    public DateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(DateTime dateTime) {
         this.dateTime = dateTime;
     }
 }

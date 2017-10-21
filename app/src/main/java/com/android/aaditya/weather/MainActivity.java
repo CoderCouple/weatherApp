@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         WeatherController controller = new WeatherController();
-        controller.start();
+        controller.forecast24Hour();
+        controller.forecast10days();
     }
 }

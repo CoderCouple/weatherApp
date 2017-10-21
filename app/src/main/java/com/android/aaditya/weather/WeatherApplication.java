@@ -2,6 +2,8 @@ package com.android.aaditya.weather;
 
 import android.app.Application;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import timber.log.Timber;
 
 /**
@@ -14,7 +16,7 @@ public class WeatherApplication extends Application {
         super.onCreate();
 
         Timber.plant(new Timber.DebugTree());
-
-        //Observable<Response> forecastObservable = new WeatherService().getForecast();
+        JodaTimeAndroid.init(this);
+        //Observable<Response> forecastObservable = new WeatherService().get24HrForecast();
     }
 }

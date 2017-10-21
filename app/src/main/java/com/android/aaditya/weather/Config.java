@@ -24,7 +24,7 @@ public class Config {
     //--------------------------------------------------------------------------------
     // API related constants/configurations - used in ApiModule
     //--------------------------------------------------------------------------------
-    public static final String API_BASE_URL_PRODUCTION = "http://api.openweathermap.org/data/2.5/";
+    public static final String API_BASE_URL_PRODUCTION = "http://openweathermap.org/data/2.5/";
     public static final String API_BASE_URL_MOCK = "api.openweathermap.org/data/2.5/";
     // Active base url
     public static final String API_BASE_URL = API_BASE_URL_PRODUCTION;
@@ -36,6 +36,6 @@ public class Config {
     }};
 
     // Key
-    public static final String KEY_ = "b2c2f73ec36ac4a0a2ccd2107e34f54d";
+    public static final String KEY_ = "b1b15e88fa797225412429c1c50c122a1";
 
 }
