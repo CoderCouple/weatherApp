@@ -37,7 +37,7 @@ public class WeatherController {
     private JsonObject response;
 
     public void forecast24Hour() {
-        Observable<ResponseBody> observable = weatherService.get24HrForecast("1275339", Config.KEY_);
+        Observable<ResponseBody> observable = weatherService.get24HrForecast("1275339");
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,7 +90,7 @@ public class WeatherController {
     }
 
     public void forecast10days() {
-        Observable<ResponseBody> observable = weatherService.getTenDayForecast("1275339", Config.KEY_);
+        Observable<ResponseBody> observable = weatherService.getTenDayForecast("1275339");
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

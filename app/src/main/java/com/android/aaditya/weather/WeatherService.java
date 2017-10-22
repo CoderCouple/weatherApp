@@ -14,9 +14,9 @@ import retrofit2.http.Query;
 public interface WeatherService {
 
     @GET("forecast")
-    Observable<ResponseBody> get24HrForecast(@Query("id") String id, @Query("appid") String key);
+    Observable<ResponseBody> get24HrForecast(@Query("id") String id);
 
     @GET("forecast/daily")
-    Observable<ResponseBody> getTenDayForecast(@Query("id") String id, @Query("appid") String key);
+    Observable<ResponseBody> getTenDayForecast(@Query("id") String id);
 
 }
