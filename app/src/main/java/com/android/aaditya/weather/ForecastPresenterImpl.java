@@ -1,9 +1,12 @@
 package com.android.aaditya.weather;
 
+import com.android.aaditya.weather.base.BasePresenter;
 import com.android.aaditya.weather.model.ForecastDay;
 import com.android.aaditya.weather.model.ForecastInterval;
 import com.android.aaditya.weather.model.Temperature;
 import com.android.aaditya.weather.model.Weather;
+import com.android.aaditya.weather.service.ApiModule;
+import com.android.aaditya.weather.service.WeatherService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,15 +31,15 @@ import timber.log.Timber;
  * Created by aaditya on 10/20/17.
  */
 
-public class WeatherController {
-
-    private List<ForecastInterval> forecastIntervalList = new ArrayList<>();
-    private List<ForecastDay> forecastDayList = new ArrayList<>();
+public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor> implements ForecastPresenter {
 
     private WeatherService weatherService = ApiModule.getInstance().getApi();
     private JsonObject response;
 
-    public void forecast24Hour() {
+
+    @Override
+    public void get24HourData() {
+        getViewInteractor().showProgress();
         Observable<ResponseBody> observable = weatherService.get24HrForecast("1275339");
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
@@ -49,6 +52,8 @@ public class WeatherController {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        List<ForecastInterval> forecastIntervalList = new ArrayList<>();
+
                         JsonArray list = (JsonArray) response.get("list");
                         for (JsonElement element : list) {
                             JsonObject item = element.getAsJsonObject();
@@ -74,11 +79,13 @@ public class WeatherController {
                         }
 
                         Timber.d(String.valueOf(forecastIntervalList.size()));
+                        getViewInteractor().hideProgress();
+                        getViewInteractor().on24hourData(forecastIntervalList);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -86,10 +93,11 @@ public class WeatherController {
 
                     }
                 }));
-
     }
 
-    public void forecast10days() {
+    @Override
+    public void get10DaysData() {
+        getViewInteractor().showProgress();
         Observable<ResponseBody> observable = weatherService.getTenDayForecast("1275339");
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
@@ -102,6 +110,7 @@ public class WeatherController {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        List<ForecastDay> forecastDayList = new ArrayList<>();
                         JsonArray list = (JsonArray) response.get("list");
                         for (JsonElement element : list) {
                             JsonObject item = element.getAsJsonObject();
@@ -126,11 +135,13 @@ public class WeatherController {
                         }
 
                         Timber.d(String.valueOf(forecastDayList.size()));
+                        getViewInteractor().hideProgress();
+                        getViewInteractor().on10DaysData(forecastDayList);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -139,5 +150,4 @@ public class WeatherController {
                     }
                 }));
     }
-
 }

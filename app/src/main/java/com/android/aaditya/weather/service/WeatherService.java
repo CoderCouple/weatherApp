@@ -1,4 +1,4 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.service;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

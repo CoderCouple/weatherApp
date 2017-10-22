@@ -1,4 +1,6 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.service;
+
+import com.android.aaditya.weather.Config;
 
 import java.io.IOException;
 import java.util.ArrayList;
