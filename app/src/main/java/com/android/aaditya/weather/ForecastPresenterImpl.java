@@ -40,7 +40,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
     @Override
     public void get24HourData() {
         getViewInteractor().showProgress();
-        Observable<ResponseBody> observable = weatherService.get24HrForecast("1275339");
+        Observable<ResponseBody> observable = weatherService.get24HrForecast("1275339", Config.KEY_);
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,7 +98,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
     @Override
     public void get10DaysData() {
         getViewInteractor().showProgress();
-        Observable<ResponseBody> observable = weatherService.getTenDayForecast("1275339");
+        Observable<ResponseBody> observable = weatherService.getTenDayForecast("1275339",Config.KEY_);
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -2,7 +2,7 @@ package com.android.aaditya.weather;
 
 import android.content.pm.ActivityInfo;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,16 +38,14 @@ public class Config {
     }};
 
     // Key
-    public static final String KEY_ = "b1b15e88fa797225412429c1c50c122a";
+    public static final String KEY_ = "b1b15e88fa797225412429c1c50c122a1";
 
-    public static final String[] KEYS = new String[]{
-            "b1b15e88fa797225412429c1c50c122a1",
+    public static final List<String> KEYS = Arrays.asList(
             "b2c2f73ec36ac4a0a2ccd2107e34f54d",
             "7f225dfb054c4db8e8427a9e07753d77",
             "f3dae0e698039afa2098348484241311",
             "9eb1d8aed3bdc09c360faf7e61c01c51",
             "1cac6167e047af242e771ff28881f2ab",
-            "fe8264bdaae5649e2ac309b1e5db924b"
-    };
+            "fe8264bdaae5649e2ac309b1e5db924b");
 
 }

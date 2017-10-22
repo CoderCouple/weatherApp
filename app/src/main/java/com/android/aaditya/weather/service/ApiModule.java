@@ -58,15 +58,15 @@ public class ApiModule {
             builder.addInterceptor(interceptor);
         }
 
-        builder.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                HttpUrl url = request.url().newBuilder().addQueryParameter("appid",Config.KEY_).build();
-                request = request.newBuilder().url(url).build();
-                return chain.proceed(request);
-            }
-        });
+//        builder.interceptors().add(new Interceptor() {
+//            @Override
+//            public Response intercept(Chain chain) throws IOException {
+//                Request request = chain.request();
+//                HttpUrl url = request.url().newBuilder().addQueryParameter("appid",Config.KEY_).build();
+//                request = request.newBuilder().url(url).build();
+//                return chain.proceed(request);
+//            }
+//        });
         return builder.build();
     }
 
@@ -74,6 +74,7 @@ public class ApiModule {
         List<Interceptor> interceptors = new ArrayList<>();
         // add header interceptor
         interceptors.add(getHeaderInterceptor());
+        interceptors.add(new CustomeResponseInterceptor());
 
         // add logging interceptor
         if (Config.DEBUG) {
