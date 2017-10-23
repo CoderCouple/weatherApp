@@ -42,6 +42,10 @@ public class MainActivity extends BaseActivity implements ForecastViewInteractor
         presenter.get10DaysData();
     }
 
+    public void showListView(View view) {
+        startActivity(ListActivity.class, null);
+    }
+
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
