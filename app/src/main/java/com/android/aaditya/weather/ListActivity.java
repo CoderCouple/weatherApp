@@ -10,6 +10,9 @@ import com.android.aaditya.weather.model.City;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.daimajia.swipe.util.Attributes;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
@@ -20,7 +23,7 @@ import timber.log.Timber;
 
 public class ListActivity extends Activity implements CityRecyclerViewAdapter.ItemClickListener{
 
-    private List<String> cities = Arrays.asList("San Jose", "Mumbai");
+    private List<City> cities = new ArrayList<>();
     private CityRecyclerViewAdapter adapter;
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
@@ -31,6 +34,8 @@ public class ListActivity extends Activity implements CityRecyclerViewAdapter.It
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
 
+        cities.add(new City("Fremont",true,new DateTime(1508826451),"14"));
+        cities.add(new City("Mumbai",false,new DateTime(1345284000),"23"));
         adapter = new CityRecyclerViewAdapter(this, cities, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
