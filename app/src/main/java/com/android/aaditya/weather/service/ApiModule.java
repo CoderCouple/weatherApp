@@ -41,15 +41,27 @@ public class ApiModule {
         return apiModule;
     }
 
-    public WeatherService getApi() {
+    public WeatherService getWeatherService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.API_BASE_URL)
+                .baseUrl(Config.OPEN_WEATHER_URL)
                 .client(provideOkHttpClient(provideInterceptors()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         return retrofit.create(WeatherService.class);
     }
+
+    public PlacesService getPlacesService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Config.PLACES_URL)
+                .client(provideOkHttpClient(provideInterceptors()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(PlacesService.class);
+    }
+
+
 
     public OkHttpClient provideOkHttpClient(List<Interceptor> interceptors) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

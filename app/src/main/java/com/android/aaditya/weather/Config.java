@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * Created by aaditya on 10/20/17.
@@ -30,6 +31,9 @@ public class Config {
     public static final String API_BASE_URL_MOCK = "api.openweathermap.org/data/2.5/";
     // Active base url
     public static final String API_BASE_URL = API_BASE_URL_PRODUCTION;
+
+    public static final String OPEN_WEATHER_URL = "http://openweathermap.org/data/2.5/";
+    public static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/";
 
     // Common http headers required to be added by interceptor
     public static final Map<String, String> API_HEADERS = new HashMap<String, String>() {{
