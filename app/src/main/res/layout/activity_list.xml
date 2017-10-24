@@ -17,13 +17,14 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
+        app:rippleColor="@android:color/transparent"
         android:id="@+id/fab"/>
 
     <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="+"
         android:elevation="6dp"
-        android:textSize="24sp"
+        android:textSize="34sp"
         android:textColor="#fff"
         app:layout_anchor="@id/fab"
         app:layout_anchorGravity="center"/>

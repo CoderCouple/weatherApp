@@ -15,20 +15,16 @@ public class City {
     private String lat;
     private String lang;
     private boolean currentCity;
-    private DateTime dateTime;
-    private String temperature;
     private List<ForecastDay> forecastDays;
     private List<ForecastInterval> forecastIntervals;
 
-    public String getName() {
-        return name;
-    }
-
-    public City(String name, boolean currentCity, DateTime dateTime, String temperature) {
+    public City(String name, boolean currentCity) {
         this.name = name;
         this.currentCity = currentCity;
-        this.dateTime = dateTime;
-        this.temperature = temperature;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
@@ -65,22 +61,6 @@ public class City {
 
     public void setCurrentCity(boolean currentCity) {
         this.currentCity = currentCity;
-    }
-
-    public DateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(DateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
     }
 
     public List<ForecastDay> getForecastDays() {

@@ -34,7 +34,6 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
     private Context context;
     private ItemClickListener itemClickListener;
     private List<City> cities;
-    private WeatherPreferences weatherPreferences;
 
     public CityRecyclerViewAdapter(
             Context context, List<City> cities,
@@ -42,8 +41,6 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
         this.context = context;
         this.cities = cities;
         this.itemClickListener = itemClickListener;
-
-        weatherPreferences = new WeatherPreferences(context);
     }
 
     @Override
@@ -55,15 +52,11 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
     @Override
     public void onBindViewHolder(SimpleViewHolder viewHolder, int position) {
         City city = cities.get(position);
-        viewHolder.temp.setText(city.getTemperature() + viewHolder.temp.getText() + weatherPreferences.readUnit());
 
         if( city.isCurrentCity())
             viewHolder.currentLocation.setVisibility(View.VISIBLE);
 
         viewHolder.cityName.setText(city.getName());
-
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm aa");
-        viewHolder.date.setText(fmt.print(city.getDateTime()));
     }
 
     @Override
@@ -79,10 +72,8 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
     public class SimpleViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.date) TextView date;
         @BindView(R.id.current_location) ImageView currentLocation;
         @BindView(R.id.cityName) TextView cityName;
-        @BindView(R.id.temp) TextView temp;
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
@@ -102,7 +93,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
         }
     }
 
-    public static interface ItemClickListener {
+    public interface ItemClickListener {
 
         void onItemClicked(City city);
 

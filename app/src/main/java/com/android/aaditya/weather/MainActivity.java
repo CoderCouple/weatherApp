@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity implements ForecastViewInteractor
     }
 
     public void showListView(View view) {
-        startActivity(ListActivity.class, null);
+        startActivity(CityListActivity.class, null);
     }
 
     @Override

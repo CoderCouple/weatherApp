@@ -33,7 +33,7 @@ import timber.log.Timber;
 
 public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor> implements ForecastPresenter {
 
-    private WeatherService weatherService = ApiModule.getInstance().getApi();
+    private WeatherService weatherService = ApiModule.getInstance().getWeatherService();
     private JsonObject response;
 
 
