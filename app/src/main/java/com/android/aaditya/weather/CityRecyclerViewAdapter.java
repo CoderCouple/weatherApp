@@ -33,13 +33,13 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
     private Context context;
     private ItemClickListener itemClickListener;
-    private List<City> cities;
+    private List<City> cityList;
 
     public CityRecyclerViewAdapter(
-            Context context, List<City> cities,
+            Context context, List<City> cityList,
             ItemClickListener itemClickListener) {
         this.context = context;
-        this.cities = cities;
+        this.cityList = cityList;
         this.itemClickListener = itemClickListener;
     }
 
@@ -51,17 +51,18 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
     @Override
     public void onBindViewHolder(SimpleViewHolder viewHolder, int position) {
-        City city = cities.get(position);
+        City city = cityList.get(position);
 
         if( city.isCurrentCity())
             viewHolder.currentLocation.setVisibility(View.VISIBLE);
 
         viewHolder.cityName.setText(city.getName());
+        mItemManger.bindView(viewHolder.itemView, position);
     }
 
     @Override
     public int getItemCount() {
-        return cities.size();
+        return cityList.size();
     }
 
     @Override

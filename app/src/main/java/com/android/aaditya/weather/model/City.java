@@ -18,11 +18,6 @@ public class City {
     private List<ForecastDay> forecastDays;
     private List<ForecastInterval> forecastIntervals;
 
-    public City(String name, boolean currentCity) {
-        this.name = name;
-        this.currentCity = currentCity;
-    }
-
     public String getName() {
         return name;
     }

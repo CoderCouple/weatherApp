@@ -44,6 +44,8 @@ public class Config {
     // Key
     public static final String KEY_ = "b1b15e88fa797225412429c1c50c122a1";
 
+    public static final String GOOGLE_PLACES_KEY = "AIzaSyAU9ShujnIg3IDQxtPr7Q1qOvFVdwNmWc4";
+
     public static final List<String> KEYS = Arrays.asList(
             "b2c2f73ec36ac4a0a2ccd2107e34f54d",
             "7f225dfb054c4db8e8427a9e07753d77",

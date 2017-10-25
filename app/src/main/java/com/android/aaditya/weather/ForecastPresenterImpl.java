@@ -1,6 +1,7 @@
 package com.android.aaditya.weather;
 
 import com.android.aaditya.weather.base.BasePresenter;
+import com.android.aaditya.weather.model.City;
 import com.android.aaditya.weather.model.ForecastDay;
 import com.android.aaditya.weather.model.ForecastInterval;
 import com.android.aaditya.weather.model.Temperature;
@@ -35,12 +36,15 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
 
     private WeatherService weatherService = ApiModule.getInstance().getWeatherService();
     private JsonObject response;
+    private City city ;
 
 
     @Override
-    public void get24HourData() {
+    public void get24HourData(final City city) {
+        this.city = city;
+
         getViewInteractor().showProgress();
-        Observable<ResponseBody> observable = weatherService.get24HrForecast("1275339", Config.KEY_);
+        Observable<ResponseBody> observable = weatherService.get24HrForecast(city.getLat(),city.getLang(), Config.KEY_);
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,7 +84,8 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
 
                         Timber.d(String.valueOf(forecastIntervalList.size()));
                         getViewInteractor().hideProgress();
-                        getViewInteractor().on24hourData(forecastIntervalList);
+                        city.setForecastIntervals(forecastIntervalList);
+                        getViewInteractor().on24hourData(city);
                     }
 
                     @Override
@@ -96,9 +101,9 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
     }
 
     @Override
-    public void get10DaysData() {
+    public void get10DaysData(final City city) {
         getViewInteractor().showProgress();
-        Observable<ResponseBody> observable = weatherService.getTenDayForecast("1275339",Config.KEY_);
+        Observable<ResponseBody> observable = weatherService.getTenDayForecast(city.getLat(), city.getLang(),Config.KEY_);
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,7 +141,8 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
 
                         Timber.d(String.valueOf(forecastDayList.size()));
                         getViewInteractor().hideProgress();
-                        getViewInteractor().on10DaysData(forecastDayList);
+                        city.setForecastDays(forecastDayList);
+                        getViewInteractor().on10DaysData(city);
                     }
 
                     @Override
