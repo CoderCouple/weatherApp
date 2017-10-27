@@ -7,17 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.aaditya.weather.model.City;
-import com.android.aaditya.weather.util.WeatherPreferences;
-import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
@@ -84,7 +78,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
         @OnClick(R.id.info)
         public void details() {
-            itemClickListener.onItemClicked(null);
+            itemClickListener.onItemClicked(getAdapterPosition());
         }
 
         @OnClick(R.id.trash)
@@ -96,7 +90,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
     public interface ItemClickListener {
 
-        void onItemClicked(City city);
+        void onItemClicked(int position);
 
     }
 

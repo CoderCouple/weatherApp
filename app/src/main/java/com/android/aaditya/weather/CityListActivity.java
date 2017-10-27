@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.android.aaditya.weather.base.BaseActivity;
 import com.android.aaditya.weather.model.City;
+import com.android.aaditya.weather.util.WeatherPreferences;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -35,6 +36,8 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     private CityRecyclerViewAdapter adapter;
     private ForecastPresenter presenter;
 
+    private WeatherPreferences preferences;
+
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
@@ -43,9 +46,10 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        preferences = new WeatherPreferences(this);
         presenter = new ForecastPresenterImpl();
         presenter.attachViewInteractor(this);
-        cityList = new ArrayList<City>(cities.values());
+        cityList = preferences.readCityList();
         adapter = new CityRecyclerViewAdapter(this, cityList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -106,14 +110,15 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     }
 
     private void onCityListChange(List<City> cities) {
-        for (City city : cities) {
-
-        }
+        preferences.saveCityList(cities);
     }
 
     @Override
-    public void onItemClicked(City city) {
+    public void onItemClicked(int position) {
         Timber.d("Clicked");
+        Bundle dataBundle = new Bundle();
+        dataBundle.putInt("position", position);
+        startActivity(CitySliderActivity.class, dataBundle);
         //TODO: intent to detail view
     }
 
@@ -139,6 +144,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         cityList.clear();
         cityList.addAll(cities.values());
         adapter.notifyDataSetChanged();
+        onCityListChange(cityList);
     }
 
     @Override
@@ -147,5 +153,6 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         cityList.clear();
         cityList.addAll(cities.values());
         adapter.notifyDataSetChanged();
+        onCityListChange(cityList);
     }
 }

@@ -6,10 +6,11 @@ import org.joda.time.DateTime;
  * Created by aaditya on 10/20/17.
  */
 
+
 public class ForecastDay {
 
     private Weather weather;
-    private DateTime dateTime;
+    private String dateTime;
 
     public Weather getWeather() {
         return weather;
@@ -19,11 +20,11 @@ public class ForecastDay {
         this.weather = weather;
     }
 
-    public DateTime getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(DateTime dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 }

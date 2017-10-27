@@ -4,6 +4,7 @@ package com.android.aaditya.weather.model;
  * Created by aaditya on 10/20/17.
  */
 
+
 public class Temperature {
 
     private String currentTemp;

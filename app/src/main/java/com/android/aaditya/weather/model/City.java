@@ -8,6 +8,7 @@ import java.util.List;
  * Created by aaditya on 10/20/17.
  */
 
+
 public class City {
 
     private String name;

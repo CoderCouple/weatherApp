@@ -19,13 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CityListActivity"></activity>
-
+        <activity android:name=".CityListActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD8ar5uJ6KQd4Mbvj56TZv7L7DpcFCN1gc"/>
-    </application>
+            android:value="AIzaSyD8ar5uJ6KQd4Mbvj56TZv7L7DpcFCN1gc" />
 
+        <activity android:name=".CitySliderActivity"></activity>
+    </application>
 
 </manifest>

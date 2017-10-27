@@ -76,7 +76,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                             weather.setStatus(weatherJson.get("main").getAsString());
                             weather.setTemperature(temperature);
 
-                            forecastInterval.setDateTime(new DateTime(Long.valueOf(item.get("dt").getAsString()) *1000));
+                            forecastInterval.setDateTime(String.valueOf(Long.valueOf(item.get("dt").getAsString()) *1000));
                             forecastInterval.setWeather(weather);
 
                             forecastIntervalList.add(forecastInterval);
@@ -133,7 +133,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                             weather.setIcon(weatherJson.get("icon").getAsString());
                             weather.setStatus(weatherJson.get("main").getAsString());
                             weather.setTemperature(temperature);
-                            forecastDay.setDateTime(new DateTime(Long.valueOf(item.get("dt").getAsString()) *1000));
+                            forecastDay.setDateTime(String.valueOf(Long.valueOf(item.get("dt").getAsString()) *1000));
                             forecastDay.setWeather(weather);
 
                             forecastDayList.add(forecastDay);
