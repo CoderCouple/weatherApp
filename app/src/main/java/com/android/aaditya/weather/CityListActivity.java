@@ -50,13 +50,15 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         presenter = new ForecastPresenterImpl();
         presenter.attachViewInteractor(this);
         cityList = preferences.readCityList();
+        if (cityList.size() > 0) {
+            for (City city: cityList)
+                cities.put(city.getPlaceId(),city);
+        }
         adapter = new CityRecyclerViewAdapter(this, cityList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-
     }
 
     @OnClick(R.id.fab)
@@ -114,12 +116,20 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onCityClicked(int position) {
         Timber.d("Clicked");
         Bundle dataBundle = new Bundle();
         dataBundle.putInt("position", position);
         startActivity(CitySliderActivity.class, dataBundle);
         //TODO: intent to detail view
+    }
+
+    @Override
+    public void onCityDelete(int position) {
+        cities.remove(cityList.get(position).getPlaceId());
+        cityList.remove(position);
+        adapter.notifyDataSetChanged();
+        onCityListChange(cityList);
     }
 
     @Override

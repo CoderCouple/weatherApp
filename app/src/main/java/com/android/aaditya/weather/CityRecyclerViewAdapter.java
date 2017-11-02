@@ -2,13 +2,11 @@ package com.android.aaditya.weather;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.aaditya.weather.model.City;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
@@ -18,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by Student on 10/23/17.
@@ -78,19 +77,23 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
         @OnClick(R.id.info)
         public void details() {
-            itemClickListener.onItemClicked(getAdapterPosition());
+            itemClickListener.onCityClicked(getAdapterPosition());
         }
 
         @OnClick(R.id.trash)
         public void delete() {
-            Log.d(getClass().getSimpleName(), "onItemSelected: " + cityName.getText().toString());
-            Toast.makeText(context, "onItemSelected: " + cityName.getText().toString(), Toast.LENGTH_SHORT).show();
+            Timber.d(cityList.get(getAdapterPosition()).getName());
+            itemClickListener.onCityDelete(getAdapterPosition());
+
+            //Toast.makeText(context, "onItemSelected: " + cityName.getText().toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
     public interface ItemClickListener {
 
-        void onItemClicked(int position);
+        void onCityClicked(int position);
+
+        void onCityDelete(int position);
 
     }
 
