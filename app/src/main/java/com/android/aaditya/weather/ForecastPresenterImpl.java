@@ -2,8 +2,7 @@ package com.android.aaditya.weather;
 
 import com.android.aaditya.weather.base.BasePresenter;
 import com.android.aaditya.weather.model.City;
-import com.android.aaditya.weather.model.ForecastDay;
-import com.android.aaditya.weather.model.ForecastInterval;
+import com.android.aaditya.weather.model.Forecast;
 import com.android.aaditya.weather.model.Temperature;
 import com.android.aaditya.weather.model.Weather;
 import com.android.aaditya.weather.service.ApiModule;
@@ -12,8 +11,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
 
 
     @Override
-    public void get24HourData(final City city) {
+    public void getForecast(final City city) {
         this.city = city;
 
         getViewInteractor().showProgress();
@@ -56,13 +53,13 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        List<ForecastInterval> forecastIntervalList = new ArrayList<>();
+                        List<Forecast> forecastList = new ArrayList<>();
 
                         JsonArray list = (JsonArray) response.get("list");
                         for (JsonElement element : list) {
                             JsonObject item = element.getAsJsonObject();
 
-                            ForecastInterval forecastInterval = new ForecastInterval();
+                            Forecast forecast = new Forecast();
                             Weather weather = new Weather();
                             Temperature temperature = new Temperature();
 
@@ -76,16 +73,16 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                             weather.setStatus(weatherJson.get("main").getAsString());
                             weather.setTemperature(temperature);
 
-                            forecastInterval.setDateTime(String.valueOf(Long.valueOf(item.get("dt").getAsString()) *1000));
-                            forecastInterval.setWeather(weather);
+                            forecast.setDateTime(String.valueOf(Long.valueOf(item.get("dt").getAsString())));
+                            forecast.setWeather(weather);
 
-                            forecastIntervalList.add(forecastInterval);
+                            forecastList.add(forecast);
                         }
 
-                        Timber.d(String.valueOf(forecastIntervalList.size()));
+                        Timber.d(String.valueOf(forecastList.size()));
                         getViewInteractor().hideProgress();
-                        city.setForecastIntervals(forecastIntervalList);
-                        getViewInteractor().on24hourData(city);
+                        city.setForecasts(forecastList);
+                        getViewInteractor().onForecast(city);
                     }
 
                     @Override
@@ -100,60 +97,4 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                 }));
     }
 
-    @Override
-    public void get10DaysData(final City city) {
-        getViewInteractor().showProgress();
-        Observable<ResponseBody> observable = weatherService.getTenDayForecast(city.getLat(), city.getLang(),Config.KEY_);
-        new CompositeDisposable().add(observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(@NonNull ResponseBody responseBody) {
-                        try {
-                            response = (JsonObject) new JsonParser().parse(String.valueOf((responseBody).string()));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        List<ForecastDay> forecastDayList = new ArrayList<>();
-                        JsonArray list = (JsonArray) response.get("list");
-                        for (JsonElement element : list) {
-                            JsonObject item = element.getAsJsonObject();
-
-                            ForecastDay forecastDay = new ForecastDay();
-                            Weather weather = new Weather();
-                            Temperature temperature = new Temperature();
-
-                            JsonObject main = item.get("temp").getAsJsonObject();
-                            //temperature.setCurrentTemp(main.get("temp").getAsString());
-                            temperature.setMaxTemp(main.get("max").getAsString());
-                            temperature.setMinTemp(main.get("min").getAsString());
-
-                            JsonObject weatherJson = ((JsonArray)item.get("weather")).get(0).getAsJsonObject();
-                            weather.setIcon(weatherJson.get("icon").getAsString());
-                            weather.setStatus(weatherJson.get("main").getAsString());
-                            weather.setTemperature(temperature);
-                            forecastDay.setDateTime(String.valueOf(Long.valueOf(item.get("dt").getAsString()) *1000));
-                            forecastDay.setWeather(weather);
-
-                            forecastDayList.add(forecastDay);
-                        }
-
-                        Timber.d(String.valueOf(forecastDayList.size()));
-                        getViewInteractor().hideProgress();
-                        city.setForecastDays(forecastDayList);
-                        getViewInteractor().on10DaysData(city);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
-    }
 }

@@ -6,10 +6,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.aaditya.weather.base.BaseActivity;
-import com.android.aaditya.weather.model.ForecastDay;
-import com.android.aaditya.weather.model.ForecastInterval;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

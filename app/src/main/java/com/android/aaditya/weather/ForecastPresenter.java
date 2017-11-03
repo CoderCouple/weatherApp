@@ -9,7 +9,6 @@ import com.android.aaditya.weather.model.City;
 
 public interface ForecastPresenter extends Presenter<ForecastViewInteractor> {
 
-    void get24HourData(City city);
+    void getForecast(City city);
 
-    void get10DaysData(City city);
 }

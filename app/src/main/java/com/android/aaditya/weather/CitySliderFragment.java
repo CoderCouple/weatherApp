@@ -10,9 +10,18 @@ import android.widget.TextView;
 
 import com.android.aaditya.weather.base.BaseFragment;
 import com.android.aaditya.weather.model.City;
+import com.android.aaditya.weather.model.Forecast;
+import com.android.aaditya.weather.model.Weather;
 import com.google.gson.Gson;
 
+import org.joda.time.DateTime;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
+import timber.log.Timber;
 
 /**
  * Created by Student on 10/26/17.
@@ -21,6 +30,7 @@ import butterknife.BindView;
 public class CitySliderFragment extends BaseFragment {
 
     private City city;
+    private Map<String,Weather> forecastMap = new HashMap<>();
 
     @BindView(R.id.cityName)
     TextView cityName;
@@ -34,7 +44,7 @@ public class CitySliderFragment extends BaseFragment {
         Bundle args = getArguments();
         String cityJson = (String) args.get("city");
         city = new Gson().fromJson(cityJson, City.class);
-
+        getDailyForecast(city);
         return rootView;
     }
 
@@ -43,5 +53,31 @@ public class CitySliderFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         cityName.setText(city.getName());
+    }
+
+    private void getDailyForecast(City city) {
+        List<Forecast> forecastList = city.getForecasts();
+        Weather weather = null;
+        for(Forecast forecast: forecastList) {
+            DateTime dateTime = new DateTime(Integer.parseInt(forecast.getDateTime()) * 1000L);
+            String key = String.valueOf(dateTime.getYear()) + dateTime.getMonthOfYear() + dateTime.getDayOfMonth();
+            if (! forecastMap.containsKey(key))
+                forecastMap.put(key, forecast.getWeather());
+            else {
+                weather = forecastMap.get(key);
+                if (Double.parseDouble(weather.getTemperature().getMaxTemp()) < Double.parseDouble(forecast.getWeather().getTemperature().getMaxTemp())){
+                    weather.getTemperature().setMaxTemp(forecast.getWeather().getTemperature().getMaxTemp());
+                }
+
+                if (Double.parseDouble(weather.getTemperature().getMinTemp()) > Double.parseDouble(forecast.getWeather().getTemperature().getMinTemp())){
+                    weather.getTemperature().setMinTemp(forecast.getWeather().getTemperature().getMinTemp());
+                }
+            }
+            if (dateTime.getHourOfDay() >= 11 || dateTime.getHourOfDay() <= 2)
+                weather.setIcon(forecast.getWeather().getIcon());
+
+        }
+
+        Timber.d(forecastMap.toString());
     }
 }

@@ -20,7 +20,6 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,8 +96,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
 
                 if (!cities.containsKey(city.getPlaceId())) {
                     cities.put(city.getPlaceId(),city);
-                    presenter.get10DaysData(city);
-                    presenter.get24HourData(city);
+                    presenter.getForecast(city);
                 }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -149,7 +147,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     }
 
     @Override
-    public void on24hourData(City city) {
+    public void onForecast(City city) {
         cities.put(city.getPlaceId(), city);
         cityList.clear();
         cityList.addAll(cities.values());
@@ -157,12 +155,4 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         onCityListChange(cityList);
     }
 
-    @Override
-    public void on10DaysData(City city) {
-        cities.put(city.getPlaceId(), city);
-        cityList.clear();
-        cityList.addAll(cities.values());
-        adapter.notifyDataSetChanged();
-        onCityListChange(cityList);
-    }
 }

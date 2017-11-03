@@ -28,11 +28,11 @@ public class Config {
     // API related constants/configurations - used in ApiModule
     //--------------------------------------------------------------------------------
     public static final String API_BASE_URL_PRODUCTION = "http://openweathermap.org/data/2.5/";
-    public static final String API_BASE_URL_MOCK = "api.openweathermap.org/data/2.5/";
+    public static final String API_BASE_URL_MOCK = "http://api.openweathermap.org/data/2.5/";
     // Active base url
-    public static final String API_BASE_URL = API_BASE_URL_PRODUCTION;
+    public static final String API_BASE_URL = API_BASE_URL_MOCK;
 
-    public static final String OPEN_WEATHER_URL = "http://openweathermap.org/data/2.5/";
+    public static final String OPEN_WEATHER_URL = API_BASE_URL_MOCK;
     public static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/";
 
     // Common http headers required to be added by interceptor
@@ -42,7 +42,7 @@ public class Config {
     }};
 
     // Key
-    public static final String KEY_ = "b1b15e88fa797225412429c1c50c122a1";
+    public static final String KEY_ = "b2c2f73ec36ac4a0a2ccd2107e34f54d";
 
     public static final String GOOGLE_PLACES_KEY = "AIzaSyAU9ShujnIg3IDQxtPr7Q1qOvFVdwNmWc4";
 

@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
  */
 
 
-public class ForecastInterval {
+public class Forecast {
 
     private Weather weather;
     private String dateTime;

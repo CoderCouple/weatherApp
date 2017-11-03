@@ -1,7 +1,5 @@
 package com.android.aaditya.weather.model;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
 
 /**
@@ -16,8 +14,16 @@ public class City {
     private String lat;
     private String lang;
     private boolean currentCity;
-    private List<ForecastDay> forecastDays;
-    private List<ForecastInterval> forecastIntervals;
+    private Weather currentWeather;
+    private List<Forecast> forecasts;
+
+    public Weather getCurrentWeather() {
+        return currentWeather;
+    }
+
+    public void setCurrentWeather(Weather currentWeather) {
+        this.currentWeather = currentWeather;
+    }
 
     public String getName() {
         return name;
@@ -59,19 +65,11 @@ public class City {
         this.currentCity = currentCity;
     }
 
-    public List<ForecastDay> getForecastDays() {
-        return forecastDays;
+    public List<Forecast> getForecasts() {
+        return forecasts;
     }
 
-    public void setForecastDays(List<ForecastDay> forecastDays) {
-        this.forecastDays = forecastDays;
-    }
-
-    public List<ForecastInterval> getForecastIntervals() {
-        return forecastIntervals;
-    }
-
-    public void setForecastIntervals(List<ForecastInterval> forecastIntervals) {
-        this.forecastIntervals = forecastIntervals;
+    public void setForecasts(List<Forecast> forecasts) {
+        this.forecasts = forecasts;
     }
 }
