@@ -61,8 +61,10 @@ public class CitySliderFragment extends BaseFragment {
         for(Forecast forecast: forecastList) {
             DateTime dateTime = new DateTime(Integer.parseInt(forecast.getDateTime()) * 1000L);
             String key = String.valueOf(dateTime.getYear()) + dateTime.getMonthOfYear() + dateTime.getDayOfMonth();
-            if (! forecastMap.containsKey(key))
+            if (! forecastMap.containsKey(key)) {
                 forecastMap.put(key, forecast.getWeather());
+                weather = forecast.getWeather();
+            }
             else {
                 weather = forecastMap.get(key);
                 if (Double.parseDouble(weather.getTemperature().getMaxTemp()) < Double.parseDouble(forecast.getWeather().getTemperature().getMaxTemp())){
