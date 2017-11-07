@@ -32,7 +32,8 @@ import timber.log.Timber;
 public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor> implements ForecastPresenter {
 
     private WeatherService weatherService = ApiModule.getInstance().getWeatherService();
-    private JsonObject response;
+    private JsonObject response1;
+    private JsonObject response2;
     private City city ;
 
 
@@ -49,13 +50,13 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                     @Override
                     public void onNext(@NonNull ResponseBody responseBody) {
                         try {
-                            response = (JsonObject) new JsonParser().parse(String.valueOf((responseBody).string()));
+                            response1 = (JsonObject) new JsonParser().parse(String.valueOf((responseBody).string()));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         List<Forecast> forecastList = new ArrayList<>();
 
-                        JsonArray list = (JsonArray) response.get("list");
+                        JsonArray list = (JsonArray) response1.get("list");
                         for (JsonElement element : list) {
                             JsonObject item = element.getAsJsonObject();
 
@@ -82,6 +83,56 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                         Timber.d(String.valueOf(forecastList.size()));
                         getViewInteractor().hideProgress();
                         city.setForecasts(forecastList);
+                        getViewInteractor().onForecast(city);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                }));
+    }
+
+    public void getCurrentForecast(final City city) {
+        this.city = city;
+
+        getViewInteractor().showProgress();
+        Observable<ResponseBody> observable = weatherService.getCurrentForecast(city.getLat(),city.getLang(), Config.KEY_);
+        new CompositeDisposable().add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull ResponseBody responseBody) {
+                        try {
+                            response2 = (JsonObject) new JsonParser().parse(String.valueOf((responseBody).string()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Weather currentWeather = new Weather();
+                        JsonObject currTemp = (JsonObject) response2.get("main");
+                        Temperature temperature = new Temperature();
+
+                        temperature.setCurrentTemp(currTemp.get("temp").getAsString());
+                        temperature.setMaxTemp(currTemp.get("temp_max").getAsString());
+                        temperature.setMinTemp(currTemp.get("temp_min").getAsString());
+
+
+
+                            JsonObject weatherJson = ((JsonArray)response2.get("weather")).get(0).getAsJsonObject();
+                            currentWeather.setIcon(weatherJson.get("icon").getAsString());
+                            currentWeather.setStatus(weatherJson.get("main").getAsString());
+                            currentWeather.setTemperature(temperature);
+
+
+
+                        getViewInteractor().hideProgress();
+                        city.setCurrentWeather(currentWeather);
                         getViewInteractor().onForecast(city);
                     }
 

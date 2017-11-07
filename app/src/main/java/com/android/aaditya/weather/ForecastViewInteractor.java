@@ -15,4 +15,6 @@ public interface ForecastViewInteractor extends ViewInteractor{
 
     void onForecast(City city);
 
+    void onCurrentForecast(City city);
+
 }
