@@ -26,7 +26,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD8ar5uJ6KQd4Mbvj56TZv7L7DpcFCN1gc" />
 
-        <activity android:name=".CitySliderActivity"></activity>
+        <activity android:name=".CitySliderActivity" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

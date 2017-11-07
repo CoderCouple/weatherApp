@@ -26,25 +26,41 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/cityName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:tag="Hover"
+            android:id="@+id/time"
+            android:text="12:41 Pm"
+            android:textColor="#fff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cityName"
+            android:textColor="#fff"
             android:text="Mumbai"
+            android:layout_below="@+id/time"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/cityTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:tag="Hover"
+            android:text="23°F"
             android:textColor="#fff"
             android:textSize="35sp" />
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/current_location"
-            android:src="@drawable/ic_location"
-            android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"/>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/current_location"-->
+            <!--android:src="@drawable/ic_location"-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="20dp"/>-->
 
 
     </RelativeLayout>
