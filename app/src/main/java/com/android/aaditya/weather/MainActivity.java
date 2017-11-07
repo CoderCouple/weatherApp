@@ -12,8 +12,17 @@ import android.widget.TextView;
 
 import com.android.aaditya.weather.base.BaseActivity;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Request;
+import okhttp3.Response;
 import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements BaseActivity.PermissionCallback {
@@ -50,6 +59,17 @@ public class MainActivity extends BaseActivity implements BaseActivity.Permissio
         }
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         Timber.d(String.valueOf(location.getLatitude()));
+    }
+
+    public void get10days(View view) throws IOException {
+        URL url = new URL("http://www.android.com/");
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            Timber.d(in.toString());
+        } finally {
+            urlConnection.disconnect();
+        }
     }
 
     public void showListView(View view) {

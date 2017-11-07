@@ -13,6 +13,7 @@ public class City {
     private String placeId;
     private String lat;
     private String lang;
+    private String timeZone;
     private boolean currentCity;
     private Weather currentWeather;
     private List<Forecast> forecasts;
@@ -55,6 +56,14 @@ public class City {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     public boolean isCurrentCity() {
