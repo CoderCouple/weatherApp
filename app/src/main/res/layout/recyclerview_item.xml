@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/current_location"
             android:src="@drawable/ic_location"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"/>

@@ -1,7 +1,12 @@
 package com.android.aaditya.weather;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,17 +33,19 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class CityListActivity extends BaseActivity implements CityRecyclerViewAdapter.ItemClickListener, ForecastViewInteractor {
+public class CityListActivity extends BaseActivity implements CityRecyclerViewAdapter.ItemClickListener, ForecastViewInteractor, BaseActivity.PermissionCallback {
 
-    private Map<String,City> cities = new HashMap<>();
+    private Map<String, City> cities = new HashMap<>();
     private List<City> cityList;
     private CityRecyclerViewAdapter adapter;
     private ForecastPresenter presenter;
 
     private WeatherPreferences preferences;
 
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +57,12 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         presenter.attachViewInteractor(this);
         cityList = preferences.readCityList();
         if (cityList.size() > 0) {
-            for (City city: cityList)
-                cities.put(city.getPlaceId(),city);
+            for (City city : cityList)
+                cities.put(city.getPlaceId(), city);
         }
+
+        requestLocation();
+
         adapter = new CityRecyclerViewAdapter(this, cityList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -95,7 +105,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
                 city.setLat(String.valueOf(place.getLatLng().latitude));
 
                 if (!cities.containsKey(city.getPlaceId())) {
-                    cities.put(city.getPlaceId(),city);
+                    cities.put(city.getPlaceId(), city);
                     presenter.getForecast(city);
                     presenter.getCurrentForecast(city);
                 }
@@ -154,6 +164,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         cityList.addAll(cities.values());
         adapter.notifyDataSetChanged();
         onCityListChange(cityList);
+        requestLocation();
     }
 
     @Override
@@ -162,4 +173,49 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
 
     }
 
+    @Override
+    public void onPermissionGranted(String[] grantedPermissions) {
+        requestLocation();
+    }
+
+    @Override
+    public void onPermissionDenied(String[] deniedPermissions) {
+
+    }
+
+    @Override
+    public void onPermissionBlocked(String[] blockedPermissions) {
+
+    }
+
+    public void requestLocation() {
+        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            requestPermission(Manifest.permission.ACCESS_FINE_LOCATION,this);
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Timber.d(String.valueOf(current.getLatitude()));
+        for (City city : cities.values()){
+            Location cityLocation = new Location("city");
+            cityLocation.setLatitude(Double.parseDouble(city.getLat()));
+            cityLocation.setLongitude(Double.parseDouble(city.getLang()));
+
+            if (current.distanceTo(cityLocation) < 3000) {
+                city.setCurrentCity(true);
+                cities.put(city.getPlaceId(),city);
+            }
+        }
+        cityList.clear();
+        cityList.addAll(cities.values());
+        onCityListChange(cityList);
+    }
 }

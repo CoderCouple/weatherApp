@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.aaditya.weather.model.City;
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.List;
@@ -68,6 +69,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
         @BindView(R.id.current_location) ImageView currentLocation;
         @BindView(R.id.cityName) TextView cityName;
+        @BindView(R.id.swipe) SwipeLayout swipeLayout;
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
@@ -84,7 +86,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
         public void delete() {
             Timber.d(cityList.get(getAdapterPosition()).getName());
             itemClickListener.onCityDelete(getAdapterPosition());
-
+            swipeLayout.close();
             //Toast.makeText(context, "onItemSelected: " + cityName.getText().toString(), Toast.LENGTH_SHORT).show();
         }
     }
