@@ -97,6 +97,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
                 if (!cities.containsKey(city.getPlaceId())) {
                     cities.put(city.getPlaceId(),city);
                     presenter.getForecast(city);
+                    presenter.getCurrentForecast(city);
                 }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -153,6 +154,12 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         cityList.addAll(cities.values());
         adapter.notifyDataSetChanged();
         onCityListChange(cityList);
+    }
+
+    @Override
+    public void onCurrentForecast(City city) {
+
+
     }
 
 }

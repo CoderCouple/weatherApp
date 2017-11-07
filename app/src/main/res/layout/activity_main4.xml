@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@drawable/background"
+    tools:context="com.android.aaditya.weather.Main4Activity">
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_weight=".4"
         android:layout_width="match_parent"
         android:layout_height="0dp">
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Mumbai"
+          android:textAlignment="center"
+          android:textStyle="bold"
+          android:textSize="30sp"/>
 
         <TextView
-            android:id="@+id/cityNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mumbai"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/weatherStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cloudy"
             android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/currTempTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="25°"
             android:textAlignment="center"
-            android:textSize="65sp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textSize="65sp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,48 +46,44 @@
 
 
             <TextView
-                android:id="@+id/dayTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="10dp"
                 android:text="Today"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/dayNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="10dp"
                 android:text="Thursday"
                 android:textAlignment="center"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_margin="10dp"
+                android:padding="10dp"/>
 
             <TextView
-                android:id="@+id/minTempTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="10dp"
                 android:text="10"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/maxTempTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="10dp"
                 android:text="20"
                 android:textAlignment="center"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_margin="10dp"
+                android:padding="10dp"/>
 
         </LinearLayout>
 

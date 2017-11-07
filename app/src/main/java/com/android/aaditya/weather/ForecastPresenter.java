@@ -11,4 +11,6 @@ public interface ForecastPresenter extends Presenter<ForecastViewInteractor> {
 
     void getForecast(City city);
 
+    void getCurrentForecast(City city);
+
 }
