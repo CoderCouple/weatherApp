@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -60,7 +62,8 @@ public class TenDaySummaryAdapter extends RecyclerView.Adapter<TenDaySummaryAdap
         TextView dayNameTextView = viewHolder.dayNameTextView;
         dayNameTextView.setText(TenDaySummary.getDay());
         ImageView iconImageViewTenDay = viewHolder.iconImageViewTenDay;
-        iconImageViewTenDay.setImageResource(TenDaySummary.getIcon());
+        Picasso.with(getContext()).load("http://i.imgur.com/DvpvklR.png"+"").into(iconImageViewTenDay);
+        //iconImageViewTenDay.setImageResource(TenDaySummary.getIcon());
         TextView minTempTextView = viewHolder.minTempTextView;
         minTempTextView.setText(String.valueOf(TenDaySummary.getMin()));
         TextView maxTempTextView = viewHolder.maxTempTextView;
