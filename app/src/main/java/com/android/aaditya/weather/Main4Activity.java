@@ -14,7 +14,7 @@ public class Main4Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
+        /*RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
 
         // Initialize contacts
         mTenDaySummary = TenDaySummary.createTenDaySummaryList(20);
@@ -24,6 +24,7 @@ public class Main4Activity extends AppCompatActivity {
         rvContacts.setAdapter(adapter1);
         // Set layout manager to position the items
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
+
 
 
         RecyclerView list = (RecyclerView) findViewById(R.id.list);
@@ -36,5 +37,6 @@ public class Main4Activity extends AppCompatActivity {
         // Set layout manager to position the items
         list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         // That's all!
+        */
     }
 }

@@ -29,6 +29,9 @@ public class Config {
     //--------------------------------------------------------------------------------
     public static final String API_BASE_URL_PRODUCTION = "http://openweathermap.org/data/2.5/";
     public static final String API_BASE_URL_MOCK = "http://api.openweathermap.org/data/2.5/";
+
+    public static final String WEATHER_ICON_URL = "http://openweathermap.org/img/w/";
+
     // Active base url
     public static final String API_BASE_URL = API_BASE_URL_MOCK;
 

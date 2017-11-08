@@ -116,7 +116,7 @@ public class CitySliderFragment extends BaseFragment {
 
 
         // Initialize contacts
-        mTenDaySummary = TenDaySummary.createTenDaySummaryList(20);
+        mTenDaySummary = TenDaySummary.createTenDaySummaryList(city);
         // Create adapter passing in the sample user data
         TenDaySummaryAdapter adapter1 = new TenDaySummaryAdapter(getContext(), mTenDaySummary);
         // Attach the adapter to the recyclerview to populate items
@@ -126,7 +126,7 @@ public class CitySliderFragment extends BaseFragment {
 
 
         // Initialize contacts
-        mOneDaySummary = OneDaySummary.createOneDaySummaryList(20);
+        mOneDaySummary = OneDaySummary.createOneDaySummaryList(city,getContext());
         // Create adapter passing in the sample user data
         OneDaySummaryAdapter adapter2 = new OneDaySummaryAdapter(getContext(), mOneDaySummary);
         // Attach the adapter to the recyclerview to populate items
