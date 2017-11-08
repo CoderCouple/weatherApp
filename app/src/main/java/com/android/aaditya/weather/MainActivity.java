@@ -5,6 +5,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -60,16 +62,36 @@ public class MainActivity extends BaseActivity implements BaseActivity.Permissio
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         Timber.d(String.valueOf(location.getLatitude()));
     }
+    private Handler mHandler = null;
+
+    private HandlerThread mHandlerThread = null;
 
     public void get10days(View view) throws IOException {
-        URL url = new URL("http://www.android.com/");
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            Timber.d(in.toString());
-        } finally {
-            urlConnection.disconnect();
-        }
+        StringBuilder jsonResults = new StringBuilder();
+            mHandlerThread = new HandlerThread("HandlerThread");
+            mHandlerThread.start();
+            mHandler = new Handler(mHandlerThread.getLooper());
+
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                HttpURLConnection urlConnection = null;
+                try {
+                    URL url = new URL("http://api.timezonedb.com/v2/get-time-zone?key=AZB2TC5HOU68&format=json&lat=37.3382082&lng=-121.8863286&by=position");
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    Timber.d(in.toString());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    urlConnection.disconnect();
+                }
+            }
+        });
+
     }
 
     public void showListView(View view) {

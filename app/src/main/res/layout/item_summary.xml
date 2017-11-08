@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    >
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/dayNameTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Monday"
-        />
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        android:text="Monday" />
 
     <ImageView
         android:id="@+id/iconImageViewTenDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/d10" />
+        android:background="@drawable/d10"
+        android:layout_margin="10dp"
+        android:layout_centerHorizontal="true"/>
 
 
     <TextView
         android:id="@+id/minTempTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="10"
-
-        />
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:layout_toLeftOf="@+id/maxTempTextView"
+        android:text="10"/>
 
 
     <TextView
         android:id="@+id/maxTempTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="30"
-        />
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"/>
 
-</LinearLayout>
+</RelativeLayout>

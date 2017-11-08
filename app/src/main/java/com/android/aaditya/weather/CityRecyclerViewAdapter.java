@@ -55,7 +55,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
         String temp = getConvertedTemp(city.getCurrentWeather().getTemperature().getCurrentTemp());
         viewHolder.cityTemp.setText(temp);
         viewHolder.cityName.setText(city.getName());
-        String time = DateTime.now().withZone(DateTimeZone.forID(city.getTimeZone())).toString("HH:mm:ss");
+        String time = DateTime.now().withZone(DateTimeZone.forID("America/Los_Angeles")).toString("hh:mm a");
         viewHolder.time.setText(time);
         mItemManger.bindView(viewHolder.itemView, position);
     }
@@ -73,7 +73,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
     private String getConvertedTemp(String temp) {
         String unit = preferences.readUnit();
-
+        unit = (unit == null) ? "F" : unit;
         switch (unit) {
             case "C" : return (Float.parseFloat(temp) - 273) + "°C";
 
