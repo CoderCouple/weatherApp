@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 public class Main2Activity extends AppCompatActivity {
 
-    ArrayList<TenDaySummary> mTenDaySummary;
+    //ArrayList<TenDaySummary> mTenDaySummary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
         // Lookup the recyclerview in activity layout
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
+        /*RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
 
         // Initialize contacts
         mTenDaySummary = TenDaySummary.createTenDaySummaryList(20);
@@ -27,5 +27,6 @@ public class Main2Activity extends AppCompatActivity {
         // Set layout manager to position the items
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
         // That's all!
+        */
     }
 }

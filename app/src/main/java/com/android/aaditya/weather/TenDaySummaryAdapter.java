@@ -62,7 +62,7 @@ public class TenDaySummaryAdapter extends RecyclerView.Adapter<TenDaySummaryAdap
         TextView dayNameTextView = viewHolder.dayNameTextView;
         dayNameTextView.setText(TenDaySummary.getDay());
         ImageView iconImageViewTenDay = viewHolder.iconImageViewTenDay;
-        Picasso.with(getContext()).load("http://i.imgur.com/DvpvklR.png"+"").into(iconImageViewTenDay);
+        Picasso.with(getContext()).load(Config.WEATHER_ICON_URL+TenDaySummary.getIcon()).into(iconImageViewTenDay);
         //iconImageViewTenDay.setImageResource(TenDaySummary.getIcon());
         TextView minTempTextView = viewHolder.minTempTextView;
         minTempTextView.setText(String.valueOf(TenDaySummary.getMin()));

@@ -15,7 +15,7 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        RecyclerView list = (RecyclerView) findViewById(R.id.list);
+       /* RecyclerView list = (RecyclerView) findViewById(R.id.list);
         // Initialize contacts
         mOneDaySummary = OneDaySummary.createOneDaySummaryList(20);
         // Create adapter passing in the sample user data
@@ -25,6 +25,6 @@ public class Main3Activity extends AppCompatActivity {
         // Set layout manager to position the items
         list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         // That's all!
-
+    */
     }
 }

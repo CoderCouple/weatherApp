@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -50,7 +52,8 @@ public class OneDaySummaryAdapter extends  RecyclerView.Adapter<OneDaySummaryAda
         TextView hourTextView = viewHolder.hourTextView;
         hourTextView.setText(oneDaySummary.getTime());
         ImageView iconImageViewOneDay = viewHolder.iconImageViewOneDay;
-        iconImageViewOneDay.setImageResource(oneDaySummary.getIcon());
+        Picasso.with(getContext()).load(Config.WEATHER_ICON_URL+oneDaySummary.getIcon()).into(iconImageViewOneDay);
+        //iconImageViewOneDay.setImageResource(oneDaySummary.getIcon());
         TextView tempTextView = viewHolder.tempTextView;
         tempTextView.setText(String.valueOf(oneDaySummary.getTemp()));
 
