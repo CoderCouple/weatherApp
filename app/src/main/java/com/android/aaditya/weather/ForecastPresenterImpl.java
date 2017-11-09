@@ -80,10 +80,13 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                             forecastList.add(forecast);
                         }
 
-                        Timber.d(String.valueOf(forecastList.size()));
+                        city.setForecasts(forecastList);
+                        getCurrentForecast(city);
+
+                        /*Timber.d(String.valueOf(forecastList.size()));
                         getViewInteractor().hideProgress();
                         city.setForecasts(forecastList);
-                        getViewInteractor().onForecast(city);
+                        getViewInteractor().onForecast(city);*/
                     }
 
                     @Override
@@ -101,7 +104,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
     public void getCurrentForecast(final City city) {
         this.city = city;
 
-        getViewInteractor().showProgress();
+        //getViewInteractor().showProgress();
         Observable<ResponseBody> observable = weatherService.getCurrentForecast(city.getLat(),city.getLang(), Config.KEY_);
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())

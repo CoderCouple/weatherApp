@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#1d8bec"
+    android:background="@color/colorPrimaryDark"
     tools:context="com.android.aaditya.weather.SettingActivity">
 
     <TextView
@@ -12,21 +12,22 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="32dp"
         android:text="F"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textSize="28sp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/switch_button"
         android:layout_toStartOf="@+id/switch_button"
         android:layout_marginEnd="32dp"
+        android:textColor="#FFF"
         android:id="@+id/textView" />
+
     <com.android.aaditya.weather.util.SwitchButton
         android:id="@+id/switch_button"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_centerInParent="true"
-        app:sb_checked="true"
-        app:sb_checked_color="#076ac1"
+        app:sb_checked="false"
+        app:sb_checked_color="@color/colorPrimary"
         app:sb_uncheck_color="#0bb8f2"
         app:sb_uncheckcircle_color="#0bb8f2"
         app:sb_show_indicator="false"/>
@@ -36,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="27dp"
         android:text="C"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textSize="28sp"
+        android:textColor="#FFF"
         android:layout_alignBaseline="@+id/textView"
         android:layout_alignBottom="@+id/textView"
         android:layout_toRightOf="@+id/switch_button"

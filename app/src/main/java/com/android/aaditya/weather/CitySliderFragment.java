@@ -1,5 +1,6 @@
 package com.android.aaditya.weather;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.aaditya.weather.base.BaseFragment;
@@ -62,6 +64,8 @@ public class CitySliderFragment extends BaseFragment {
     TextView maxTempTextView;
     //@BindView(R.id.cityName)
     //TextView cityName;
+    @BindView(R.id.root_layout)
+    LinearLayout rootLayout;
 
 
     public double getCelsius(String degreesKelvin)
@@ -113,6 +117,10 @@ public class CitySliderFragment extends BaseFragment {
         dayNameTextView.setText("Sunday"/*city.getForecasts().get(0).getDateTime()*/);
         minTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getMinTemp())));
         maxTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getMaxTemp())));
+        if (city.getCurrentWeather().getIcon().contains("d"));
+        rootLayout.setBackgroundColor(Color.parseColor("#4fafca"));
+        if (city.getCurrentWeather().getIcon().contains("n"))
+            rootLayout.setBackgroundColor(Color.parseColor("#464d4e"));
 
 
         // Initialize contacts

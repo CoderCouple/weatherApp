@@ -3,6 +3,7 @@ package com.android.aaditya.weather;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.android.aaditya.weather.base.BaseActivity;
 import com.android.aaditya.weather.model.City;
@@ -30,6 +31,8 @@ public class CitySliderActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_slider);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         preferences = new WeatherPreferences(this);
         Bundle extras = getIntent().getExtras();
@@ -45,6 +48,17 @@ public class CitySliderActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+   /* @Override
     public void onBackPressed() {
         if (cityPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
@@ -54,5 +68,5 @@ public class CitySliderActivity extends BaseActivity {
             // Otherwise, select the previous step.
             cityPager.setCurrentItem(cityPager.getCurrentItem() - 1);
         }
-    }
+    }*/
 }

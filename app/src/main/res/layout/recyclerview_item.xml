@@ -21,7 +21,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#32c5e6"
+        android:background="#464d4e"
         android:id="@+id/info"
         android:padding="10dp">
 

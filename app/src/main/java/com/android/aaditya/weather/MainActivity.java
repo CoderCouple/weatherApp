@@ -45,6 +45,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.Permissio
         responseView.setText("Will show size");
     }
 
+    public void startSplash(View view) {
+        startActivity(SpalshActivity.class, null);
+    }
     public void getLatLon(View view){
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 

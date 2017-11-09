@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.android.aaditya.weather.base.BaseActivity;
@@ -89,6 +90,11 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         }
     }
 
+    @OnClick(R.id.setting)
+    public void onSettingClick() {
+        startActivity(SettingActivity.class, null);
+    }
+
     @OnClick(R.id.fab)
     public void onAddClick() {
         Timber.d("on FAB button clicked");
@@ -126,7 +132,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
                 if (!cities.containsKey(city.getPlaceId())) {
                     cities.put(city.getPlaceId(), city);
                     presenter.getForecast(city);
-                    presenter.getCurrentForecast(city);
+                    //presenter.getCurrentForecast(city);
                 }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -163,6 +169,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     @Override
     protected void onResume() {
         super.onResume();
+        //updateWeather(cityList);
         adapter.notifyDataSetChanged();
     }
 
@@ -207,6 +214,12 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
 
     }
 
+    private void updateWeather(List<City> cityList) {
+        for (City city : cityList) {
+            presenter.getForecast(city);
+        }
+    }
+
     public void requestLocation() {
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
@@ -222,16 +235,20 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
             return;
         }
         Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        //NOTE: No location available
+        if (current == null)
+            return;
+
         Timber.d(String.valueOf(current.getLatitude()));
         for (City city : cities.values()){
             Location cityLocation = new Location("city");
             cityLocation.setLatitude(Double.parseDouble(city.getLat()));
             cityLocation.setLongitude(Double.parseDouble(city.getLang()));
 
-            if (current.distanceTo(cityLocation) < 3000) {
-                city.setCurrentCity(true);
-                cities.put(city.getPlaceId(),city);
-            }
+            city.setCurrentCity((current.distanceTo(cityLocation) < 3000));
+
+            cities.put(city.getPlaceId(),city);
         }
         cityList.clear();
         cityList.addAll(cities.values());
