@@ -22,9 +22,12 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.Unbinder;
@@ -37,7 +40,7 @@ import timber.log.Timber;
 public class CitySliderFragment extends BaseFragment {
 
     private City city;
-    private Map<String,Weather> forecastMap = new HashMap<>();
+    private Map<String,Forecast> forecastMap = new HashMap<String,Forecast>();
     ArrayList<TenDaySummary> mTenDaySummary;
     ArrayList<OneDaySummary> mOneDaySummary;
 
@@ -110,13 +113,13 @@ public class CitySliderFragment extends BaseFragment {
         weatherStatusTextView.setText(city.getCurrentWeather().getStatus());
         currTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getCurrentTemp()))+"°");
         dayTextView.setText("Today");
-        dayNameTextView.setText("Sunday"/*city.getForecasts().get(0).getDateTime()*/);
+        dayNameTextView.setText("Monday"/*city.getForecasts().get(0).getDateTime()*/);
         minTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getMinTemp())));
         maxTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getMaxTemp())));
 
 
         // Initialize contacts
-        mTenDaySummary = TenDaySummary.createTenDaySummaryList(city);
+        mTenDaySummary = TenDaySummary.createTenDaySummaryList(city,getContext(),forecastMap);
         // Create adapter passing in the sample user data
         TenDaySummaryAdapter adapter1 = new TenDaySummaryAdapter(getContext(), mTenDaySummary);
         // Attach the adapter to the recyclerview to populate items
@@ -141,16 +144,21 @@ public class CitySliderFragment extends BaseFragment {
     private void getDailyForecast(City city) {
         Timber.d(city.toString());
         List<Forecast> forecastList = city.getForecasts();
+        Forecast dailyForecast = new Forecast();
         Weather weather = null;
         for(Forecast forecast: forecastList) {
             DateTime dateTime = new DateTime(Integer.parseInt(forecast.getDateTime()) * 1000L);
+            //String date=  new DateTime(Long.parseLong(forecast.getDateTime())*1000l).withZone(DateTimeZone.forID(city.getTimeZone())).dayOfWeek().getAsText();
             String key = String.valueOf(dateTime.getYear()) + dateTime.getMonthOfYear() + dateTime.getDayOfMonth();
+
             if (! forecastMap.containsKey(key)) {
-                forecastMap.put(key, forecast.getWeather());
+                forecastMap.put(key, forecast);
                 weather = forecast.getWeather();
+                dailyForecast.setWeather(weather);
+                dailyForecast.setDateTime(forecast.getDateTime());
             }
             else {
-                weather = forecastMap.get(key);
+                dailyForecast = forecastMap.get(key);
                 if (Double.parseDouble(weather.getTemperature().getMaxTemp()) < Double.parseDouble(forecast.getWeather().getTemperature().getMaxTemp())){
                     weather.getTemperature().setMaxTemp(forecast.getWeather().getTemperature().getMaxTemp());
                 }
@@ -163,6 +171,11 @@ public class CitySliderFragment extends BaseFragment {
                 weather.setIcon(forecast.getWeather().getIcon());
 
         }
+
+        List<String> mapList = new ArrayList<String>(forecastMap.keySet());
+        Collections.sort(mapList);
+        String key = mapList.get(0);
+        forecastMap.remove(key);
 
         Timber.d(forecastMap.toString());
     }

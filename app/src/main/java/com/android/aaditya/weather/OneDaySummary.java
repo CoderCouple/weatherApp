@@ -73,9 +73,9 @@ public class OneDaySummary {
 
         unit = unit == null ? "F" : unit;
         switch (unit) {
-            case "C" : return String.format("%.0f",(Float.parseFloat(temp) - 273)) + "°C";
+            case "C" : return String.format("%.0f",(Float.parseFloat(temp) - 273)) + "°";
 
-            case "F" : return String.format("%.0f",(((Float.parseFloat(temp) - 273) * 9/5) + 32)) + "°F";
+            case "F" : return String.format("%.0f",(((Float.parseFloat(temp) - 273) * 9/5) + 32)) + "°";
 
             default: return "NA";
         }
