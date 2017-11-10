@@ -6,6 +6,7 @@ import com.android.aaditya.weather.model.Forecast;
 import com.android.aaditya.weather.model.Temperature;
 import com.android.aaditya.weather.model.Weather;
 import com.android.aaditya.weather.service.ApiModule;
+import com.android.aaditya.weather.service.PlacesService;
 import com.android.aaditya.weather.service.WeatherService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -32,6 +33,7 @@ import timber.log.Timber;
 public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor> implements ForecastPresenter {
 
     private WeatherService weatherService = ApiModule.getInstance().getWeatherService();
+    private PlacesService placesService = ApiModule.getInstance().getPlacesService();
     private JsonObject response1;
     private JsonObject response2;
     private City city ;
@@ -74,16 +76,21 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                             weather.setStatus(weatherJson.get("main").getAsString());
                             weather.setTemperature(temperature);
 
-                            forecast.setDateTime(String.valueOf(Long.valueOf(item.get("dt").getAsString())));
+                            forecast.setDateTime(item.get("dt").getAsString());
+                            forecast.setDateText(item.get("dt_txt").getAsString());
                             forecast.setWeather(weather);
 
                             forecastList.add(forecast);
                         }
 
-                        Timber.d(String.valueOf(forecastList.size()));
+                        city.setForecasts(forecastList);
+                        getCurrentForecast(city);
+
+
+                        /*Timber.d(String.valueOf(forecastList.size()));
                         getViewInteractor().hideProgress();
                         city.setForecasts(forecastList);
-                        getViewInteractor().onForecast(city);
+                        getViewInteractor().onForecast(city);*/
                     }
 
                     @Override
@@ -101,7 +108,7 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
     public void getCurrentForecast(final City city) {
         this.city = city;
 
-        getViewInteractor().showProgress();
+        //getViewInteractor().showProgress();
         Observable<ResponseBody> observable = weatherService.getCurrentForecast(city.getLat(),city.getLang(), Config.KEY_);
         new CompositeDisposable().add(observable
                 .subscribeOn(Schedulers.io())
@@ -134,6 +141,43 @@ public class ForecastPresenterImpl extends BasePresenter<ForecastViewInteractor>
                         getViewInteractor().hideProgress();
                         city.setCurrentWeather(currentWeather);
                         getViewInteractor().onForecast(city);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                }));
+    }
+
+
+
+        public void getTimeZoneForCity(final City city) {
+        this.city = city;
+        getViewInteractor().showProgress();
+        Observable<ResponseBody> observable =  placesService.getTimeZoneForCity(Config.KEY_TIMEZONE,Config.FORMAT_TIMEZONE,city.getLat(),city.getLang(), Config.BY_TIMEZONE);
+        new CompositeDisposable().add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull ResponseBody responseBody) {
+                        try {
+                            response2 = (JsonObject) new JsonParser().parse(String.valueOf((responseBody).string()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Weather currentWeather = new Weather();
+                        String cityTimeZone =  response2.get("zoneName").getAsString();
+
+                        getViewInteractor().hideProgress();
+                        city.setTimeZone(cityTimeZone);
+                        getForecast(city);
                     }
 
                     @Override

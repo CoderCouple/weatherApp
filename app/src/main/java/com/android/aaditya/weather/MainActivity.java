@@ -5,12 +5,15 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.aaditya.weather.base.BaseActivity;
+import com.android.aaditya.weather.util.PreferenceUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -43,6 +46,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.Permissio
         responseView.setText("Will show size");
     }
 
+    public void startSplash(View view) {
+        startActivity(SpalshActivity.class, null);
+    }
     public void getLatLon(View view){
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
@@ -60,16 +66,13 @@ public class MainActivity extends BaseActivity implements BaseActivity.Permissio
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         Timber.d(String.valueOf(location.getLatitude()));
     }
+    private Handler mHandler = null;
+
+    private HandlerThread mHandlerThread = null;
 
     public void get10days(View view) throws IOException {
-        URL url = new URL("http://www.android.com/");
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            Timber.d(in.toString());
-        } finally {
-            urlConnection.disconnect();
-        }
+        new PreferenceUtil(this).clear();
+
     }
 
     public void showListView(View view) {

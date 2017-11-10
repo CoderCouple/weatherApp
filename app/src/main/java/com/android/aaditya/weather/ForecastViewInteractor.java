@@ -17,4 +17,6 @@ public interface ForecastViewInteractor extends ViewInteractor{
 
     void onCurrentForecast(City city);
 
+    void onTimeZoneForCity(City city);
+
 }

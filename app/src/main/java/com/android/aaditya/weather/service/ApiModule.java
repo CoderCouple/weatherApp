@@ -53,7 +53,7 @@ public class ApiModule {
 
     public PlacesService getPlacesService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.PLACES_URL)
+                .baseUrl(Config.TIMEZONE_URL)
                 .client(provideOkHttpClient(provideInterceptors()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

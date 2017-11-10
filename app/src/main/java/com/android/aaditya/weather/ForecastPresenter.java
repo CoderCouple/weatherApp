@@ -13,4 +13,6 @@ public interface ForecastPresenter extends Presenter<ForecastViewInteractor> {
 
     void getCurrentForecast(City city);
 
+    void getTimeZoneForCity(City city);
+
 }

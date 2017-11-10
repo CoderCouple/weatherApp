@@ -1,10 +1,12 @@
 package com.android.aaditya.weather;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.aaditya.weather.model.City;
@@ -55,6 +57,10 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
         String temp = getConvertedTemp(city.getCurrentWeather().getTemperature().getCurrentTemp());
         viewHolder.cityTemp.setText(temp);
         viewHolder.cityName.setText(city.getName());
+        if (city.getCurrentWeather().getIcon().contains("d"));
+            viewHolder.info.setBackgroundColor(Color.parseColor("#4fafca"));
+        if (city.getCurrentWeather().getIcon().contains("n"))
+            viewHolder.info.setBackgroundColor(Color.parseColor("#464d4e"));
         String time = DateTime.now().withZone(DateTimeZone.forID(city.getTimeZone())).toString("hh:mm a");
         //String time1 = DateTime.now().withZone(DateTimeZone.forID(city.getTimeZone())).dayOfWeek().getAsText();
         viewHolder.time.setText(time);
@@ -74,12 +80,11 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
 
     private String getConvertedTemp(String temp) {
         String unit = preferences.readUnit();
-
-        unit = unit == null ? "F" : unit;
+        unit = (unit == null) ? "F" : unit;
         switch (unit) {
-            case "C" : return (Float.parseFloat(temp) - 273) + "°C";
+            case "C" : return Math.round(Float.parseFloat(temp) - 273) + "°C";
 
-            case "F" : return (((Float.parseFloat(temp) - 273) * 9/5) + 32) + "°F";
+            case "F" : return Math.round(((Float.parseFloat(temp) - 273) * 9/5) + 32) + "°F";
 
             default: return "NA";
         }
@@ -91,6 +96,7 @@ public class CityRecyclerViewAdapter extends RecyclerSwipeAdapter<CityRecyclerVi
         @BindView(R.id.cityTemp) TextView cityTemp;
         @BindView(R.id.cityName) TextView cityName;
         @BindView(R.id.swipe) SwipeLayout swipeLayout;
+        @BindView(R.id.info) RelativeLayout info;
 
         public SimpleViewHolder(View itemView) {
             super(itemView);

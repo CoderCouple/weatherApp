@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -32,11 +34,14 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
 public class CityListActivity extends BaseActivity implements CityRecyclerViewAdapter.ItemClickListener, ForecastViewInteractor, BaseActivity.PermissionCallback {
 
+    @BindView(R.id.root_layout)
+    CoordinatorLayout rootLayout;
     private Map<String, City> cities = new HashMap<>();
     private List<City> cityList;
     private CityRecyclerViewAdapter adapter;
@@ -53,6 +58,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        ButterKnife.bind(this);
 
         preferences = new WeatherPreferences(this);
         presenter = new ForecastPresenterImpl();
@@ -89,6 +95,11 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
         }
     }
 
+    @OnClick(R.id.setting)
+    public void onSettingClick() {
+        startActivity(SettingActivity.class, null);
+    }
+
     @OnClick(R.id.fab)
     public void onAddClick() {
         Timber.d("on FAB button clicked");
@@ -120,13 +131,13 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
                 City city = new City();
                 city.setName(place.getName().toString());
                 city.setPlaceId(place.getId());
-                city.setLang(String.valueOf(place.getLatLng().longitude));
-                city.setLat(String.valueOf(place.getLatLng().latitude));
+                city.setLang(String.valueOf((double)Math.round((place.getLatLng().longitude) *100)/100));
+                city.setLat(String.valueOf((double)Math.round((place.getLatLng().latitude) *100)/100));
 
                 if (!cities.containsKey(city.getPlaceId())) {
                     cities.put(city.getPlaceId(), city);
-                    presenter.getForecast(city);
-                    presenter.getCurrentForecast(city);
+                    presenter.getTimeZoneForCity(city);
+                    //presenter.getCurrentForecast(city);
                 }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -163,6 +174,7 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     @Override
     protected void onResume() {
         super.onResume();
+        //updateWeather(cityList);
         adapter.notifyDataSetChanged();
     }
 
@@ -193,6 +205,12 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
     }
 
     @Override
+    public void onTimeZoneForCity(City city) {
+
+
+    }
+
+    @Override
     public void onPermissionGranted(String[] grantedPermissions) {
         requestLocation();
     }
@@ -207,12 +225,18 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
 
     }
 
+    private void updateWeather(List<City> cityList) {
+        for (City city : cityList) {
+            presenter.getForecast(city);
+        }
+    }
+
     public void requestLocation() {
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            requestPermission(Manifest.permission.ACCESS_FINE_LOCATION,this);
+            requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, this);
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -222,16 +246,22 @@ public class CityListActivity extends BaseActivity implements CityRecyclerViewAd
             return;
         }
         Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        //NOTE: No location available
+        if (current == null) {
+            Snackbar.make(rootLayout,"Location Service Not Available", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
         Timber.d(String.valueOf(current.getLatitude()));
-        for (City city : cities.values()){
+        for (City city : cities.values()) {
             Location cityLocation = new Location("city");
             cityLocation.setLatitude(Double.parseDouble(city.getLat()));
             cityLocation.setLongitude(Double.parseDouble(city.getLang()));
 
-            if (current.distanceTo(cityLocation) < 3000) {
-                city.setCurrentCity(true);
-                cities.put(city.getPlaceId(),city);
-            }
+            city.setCurrentCity((current.distanceTo(cityLocation) < 3000));
+
+            cities.put(city.getPlaceId(), city);
         }
         cityList.clear();
         cityList.addAll(cities.values());

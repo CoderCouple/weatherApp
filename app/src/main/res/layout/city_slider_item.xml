@@ -2,29 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="#64FFDA">
+    android:id="@+id/root_layout"
+    android:background="@color/colorPrimaryDark"
+    android:weightSum="1">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
-        android:layout_weight=".4"
+        android:layout_weight=".5"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
         <TextView
             android:id="@+id/cityNameTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mumbai"
+            android:layout_marginTop="5dp"
             android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/current_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/cityNameTextView"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_location"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/weatherStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cloudy"
+            android:layout_below="@+id/cityNameTextView"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="italic" />
@@ -34,25 +49,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="25°"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/weatherStatusTextView"
             android:textAlignment="center"
-            android:textSize="65sp"
+            android:textSize="55sp"
             android:textStyle="italic" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:layout_gravity="end"
+            android:layout_alignParentBottom="true">
 
             <TextView
                 android:id="@+id/dayTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="10dp"
                 android:text="Today"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -60,10 +77,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="10dp"
                 android:text="Thursday"
+                android:layout_toRightOf="@+id/dayTextView"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -71,10 +88,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="10dp"
                 android:text="10"
+                android:layout_toLeftOf="@+id/maxTempTextView"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -82,35 +99,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="10dp"
                 android:text="20"
+                android:layout_alignParentRight="true"
                 android:textAlignment="center"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_weight=".2"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="75dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
 
-        <include layout="@layout/activity_main3">
-
-        </include>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_weight=".4"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvContacts"
+        android:layout_weight=".5"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
-        <include layout="@layout/activity_main2">
-
-        </include>
-    </LinearLayout>
+        android:layout_height="0dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
 
 </LinearLayout>

@@ -21,7 +21,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#32c5e6"
+        android:background="#464d4e"
         android:id="@+id/info"
         android:padding="10dp">
 
@@ -50,17 +50,6 @@
             android:text="23°F"
             android:textColor="#fff"
             android:textSize="35sp" />
-
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/current_location"-->
-            <!--android:src="@drawable/ic_location"-->
-            <!--android:visibility="gone"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="20dp"/>-->
 
 
     </RelativeLayout>

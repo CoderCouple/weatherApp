@@ -1,5 +1,6 @@
 package com.android.aaditya.weather;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.aaditya.weather.base.BaseFragment;
 import com.android.aaditya.weather.model.City;
 import com.android.aaditya.weather.model.Forecast;
 import com.android.aaditya.weather.model.Weather;
+import com.android.aaditya.weather.util.WeatherPreferences;
 import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,10 +45,10 @@ import timber.log.Timber;
 public class CitySliderFragment extends BaseFragment {
 
     private City city;
-    private Map<String,Forecast> forecastMap = new HashMap<String,Forecast>();
+    private Map<String,Forecast> forecastMap = new LinkedHashMap<String,Forecast>();
     ArrayList<TenDaySummary> mTenDaySummary;
     ArrayList<OneDaySummary> mOneDaySummary;
-
+    private static WeatherPreferences preferences ;
     @BindView(R.id.list)
     RecyclerView list;
     @BindView(R.id.rvContacts)
@@ -65,6 +70,10 @@ public class CitySliderFragment extends BaseFragment {
     TextView maxTempTextView;
     //@BindView(R.id.cityName)
     //TextView cityName;
+    @BindView(R.id.root_layout)
+    LinearLayout rootLayout;
+    @BindView(R.id.current_location)
+    ImageView currentLocation;
 
 
     public double getCelsius(String degreesKelvin)
@@ -82,6 +91,19 @@ public class CitySliderFragment extends BaseFragment {
         return f;
     }
 
+
+    private static String getConvertedTemp(String temp) {
+        String unit = preferences.readUnit();
+
+        unit = unit == null ? "F" : unit;
+        switch (unit) {
+            case "C" : return String.format("%.0f",(Float.parseFloat(temp) - 273)) + "°";
+
+            case "F" : return String.format("%.0f",(((Float.parseFloat(temp) - 273) * 9/5) + 32)) + "°";
+
+            default: return "NA";
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,7 +123,7 @@ public class CitySliderFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        preferences = new WeatherPreferences(getContext());
 
         /*DateTimeZone timeZone = DateTimeZone.forID( "Europe/Paris" );
         DateTime dateTime = new DateTime( 1510088400, timeZone );
@@ -111,12 +133,19 @@ public class CitySliderFragment extends BaseFragment {
 
         cityNameTextView.setText(city.getName());
         weatherStatusTextView.setText(city.getCurrentWeather().getStatus());
-        currTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getCurrentTemp()))+"°");
+        currTempTextView.setText(getConvertedTemp(city.getCurrentWeather().getTemperature().getCurrentTemp()));
         dayTextView.setText("Today");
-        dayNameTextView.setText("Monday"/*city.getForecasts().get(0).getDateTime()*/);
-        minTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getMinTemp())));
-        maxTempTextView.setText(String.format("%.1f", getCelsius(city.getCurrentWeather().getTemperature().getMaxTemp())));
+        dayNameTextView.setText(DateTime.now().withZone(DateTimeZone.forID(city.getTimeZone())).toString("EEEE MMM dd"));
+        /*city.getForecasts().get(0).getDateTime()*/;
+        minTempTextView.setText(getConvertedTemp(city.getCurrentWeather().getTemperature().getMinTemp()));
+        maxTempTextView.setText(getConvertedTemp(city.getCurrentWeather().getTemperature().getMaxTemp()));
+        if (city.getCurrentWeather().getIcon().contains("d"));
+        rootLayout.setBackgroundColor(Color.parseColor("#4fafca"));
+        if (city.getCurrentWeather().getIcon().contains("n"))
+            rootLayout.setBackgroundColor(Color.parseColor("#464d4e"));
 
+        if (city.isCurrentCity())
+            currentLocation.setVisibility(View.VISIBLE);
 
         // Initialize contacts
         mTenDaySummary = TenDaySummary.createTenDaySummaryList(city,getContext(),forecastMap);
@@ -144,18 +173,18 @@ public class CitySliderFragment extends BaseFragment {
     private void getDailyForecast(City city) {
         Timber.d(city.toString());
         List<Forecast> forecastList = city.getForecasts();
-        Forecast dailyForecast = new Forecast();
+        Forecast dailyForecast = null;
         Weather weather = null;
         for(Forecast forecast: forecastList) {
-            DateTime dateTime = new DateTime(Integer.parseInt(forecast.getDateTime()) * 1000L);
+            DateTime dateTime = new DateTime(Integer.parseInt(forecast.getDateTime()) * 1000L).withZone(DateTimeZone.forID(city.getTimeZone()));
             //String date=  new DateTime(Long.parseLong(forecast.getDateTime())*1000l).withZone(DateTimeZone.forID(city.getTimeZone())).dayOfWeek().getAsText();
             String key = String.valueOf(dateTime.getYear()) + dateTime.getMonthOfYear() + dateTime.getDayOfMonth();
 
             if (! forecastMap.containsKey(key)) {
-                forecastMap.put(key, forecast);
-                weather = forecast.getWeather();
-                dailyForecast.setWeather(weather);
-                dailyForecast.setDateTime(forecast.getDateTime());
+                dailyForecast = forecast;
+                weather = dailyForecast.getWeather();
+                forecastMap.put(key, dailyForecast);
+
             }
             else {
                 dailyForecast = forecastMap.get(key);
@@ -166,17 +195,25 @@ public class CitySliderFragment extends BaseFragment {
                 if (Double.parseDouble(weather.getTemperature().getMinTemp()) > Double.parseDouble(forecast.getWeather().getTemperature().getMinTemp())){
                     weather.getTemperature().setMinTemp(forecast.getWeather().getTemperature().getMinTemp());
                 }
+
+                dailyForecast.setWeather(weather);
+                forecastMap.put(key, dailyForecast);
             }
-            if (dateTime.getHourOfDay() >= 11 || dateTime.getHourOfDay() <= 2)
+            if (dateTime.getHourOfDay() >= 11 || dateTime.getHourOfDay() <= 2) {
                 weather.setIcon(forecast.getWeather().getIcon());
+                dailyForecast.setDateTime(forecast.getDateTime());
+                forecastMap.put(key,dailyForecast);
+            }
+
+
 
         }
 
-        List<String> mapList = new ArrayList<String>(forecastMap.keySet());
-        Collections.sort(mapList);
-        String key = mapList.get(0);
-        forecastMap.remove(key);
-
+        //List<String> mapList = new ArrayList<String>(forecastMap.keySet());
+        //Collections.sort(mapList);
+        //String key = mapList.get(0);
+        forecastMap.remove(forecastMap.keySet().iterator().next());
+        //forecastMap.remove(new ArrayList<>(forecastMap.keySet()).get(forecastMap.size() - 1));
         Timber.d(forecastMap.toString());
     }
 }

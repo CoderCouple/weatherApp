@@ -11,6 +11,15 @@ public class Forecast {
 
     private Weather weather;
     private String dateTime;
+    private String dateText;
+
+    public String getDateText() {
+        return dateText;
+    }
+
+    public void setDateText(String dateText) {
+        this.dateText = dateText;
+    }
 
     public Weather getWeather() {
         return weather;

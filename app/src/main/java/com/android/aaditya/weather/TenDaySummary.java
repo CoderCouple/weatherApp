@@ -105,7 +105,6 @@ public class TenDaySummary {
         }
     }
 
-    private static int lastItemId = 0;
 
     public static ArrayList<TenDaySummary> createTenDaySummaryList(City city,Context context,Map<String,Forecast> forecastMap) {
         preferences = new WeatherPreferences(context);
@@ -131,10 +130,6 @@ public class TenDaySummary {
 
                 TenDaySummary.add(new TenDaySummary(day,icon,minTemp,maxTemp));
             }
-
-
-
-            lastItemId++;
 
 
         return TenDaySummary;

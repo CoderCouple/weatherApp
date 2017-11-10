@@ -87,7 +87,7 @@ public class OneDaySummary {
         ArrayList<OneDaySummary> OneDaySummary = new ArrayList<OneDaySummary>();
 
 
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 0; i < 8; i++) {
 
             String time=  new DateTime(Long.parseLong(city.getForecasts().get(i).getDateTime())*1000l).withZone(DateTimeZone.forID(city.getTimeZone())).toString("hh a");
             String icon = city.getForecasts().get(i).getWeather().getIcon().toString()+".png";
