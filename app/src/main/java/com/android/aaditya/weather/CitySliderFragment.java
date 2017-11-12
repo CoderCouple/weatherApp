@@ -45,7 +45,7 @@ import timber.log.Timber;
 public class CitySliderFragment extends BaseFragment {
 
     private City city;
-    private Map<String,Forecast> forecastMap = new LinkedHashMap<String,Forecast>();
+    private Map<String,Forecast> forecastMap = new LinkedHashMap<>();
     ArrayList<TenDaySummary> mTenDaySummary;
     ArrayList<OneDaySummary> mOneDaySummary;
     private static WeatherPreferences preferences ;
@@ -68,29 +68,10 @@ public class CitySliderFragment extends BaseFragment {
     TextView minTempTextView;
     @BindView(R.id.maxTempTextView)
     TextView maxTempTextView;
-    //@BindView(R.id.cityName)
-    //TextView cityName;
     @BindView(R.id.root_layout)
     LinearLayout rootLayout;
     @BindView(R.id.current_location)
     ImageView currentLocation;
-
-
-    public double getCelsius(String degreesKelvin)
-    {
-        double degreesKelvinDouble = Double.parseDouble(degreesKelvin);
-        double c = degreesKelvinDouble - 273.16;
-        return c;
-    }
-
-
-    public double getFahrenheit(String degreesKelvin)
-    {
-        double degreesKelvinDouble = Double.parseDouble(degreesKelvin);
-        double f = (((degreesKelvinDouble - 273) * 9/5) + 32);
-        return f;
-    }
-
 
     private static String getConvertedTemp(String temp) {
         String unit = preferences.readUnit();
@@ -116,7 +97,6 @@ public class CitySliderFragment extends BaseFragment {
         Bundle args = getArguments();
         String cityJson = (String) args.get("city");
         city = new Gson().fromJson(cityJson, City.class);
-        getDailyForecast(city);
         return rootView;
     }
 
@@ -147,15 +127,6 @@ public class CitySliderFragment extends BaseFragment {
         if (city.isCurrentCity())
             currentLocation.setVisibility(View.VISIBLE);
 
-        // Initialize contacts
-        mTenDaySummary = TenDaySummary.createTenDaySummaryList(city,getContext(),forecastMap);
-        // Create adapter passing in the sample user data
-        TenDaySummaryAdapter adapter1 = new TenDaySummaryAdapter(getContext(), mTenDaySummary);
-        // Attach the adapter to the recyclerview to populate items
-        rvContacts.setAdapter(adapter1);
-        // Set layout manager to position the items
-        rvContacts.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
         // Initialize contacts
         mOneDaySummary = OneDaySummary.createOneDaySummaryList(city,getContext());
@@ -166,42 +137,49 @@ public class CitySliderFragment extends BaseFragment {
         // Set layout manager to position the items
         list.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-
-
+        // Initialize contacts
+        getDailyForecast(city);
+        mTenDaySummary = TenDaySummary.createTenDaySummaryList(city,getContext(),forecastMap);
+        // Create adapter passing in the sample user data
+        TenDaySummaryAdapter adapter1 = new TenDaySummaryAdapter(getContext(), mTenDaySummary);
+        // Attach the adapter to the recyclerview to populate items
+        rvContacts.setAdapter(adapter1);
+        // Set layout manager to position the items
+        rvContacts.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void getDailyForecast(City city) {
         Timber.d(city.toString());
-        List<Forecast> forecastList = city.getForecasts();
+        List<Forecast> forecastList = new ArrayList<>(city.getForecasts());
         Forecast dailyForecast = null;
         Weather weather = null;
-        for(Forecast forecast: forecastList) {
-            DateTime dateTime = new DateTime(Integer.parseInt(forecast.getDateTime()) * 1000L).withZone(DateTimeZone.forID(city.getTimeZone()));
+        for(Forecast item: forecastList) {
+            DateTime dateTime = new DateTime(Integer.parseInt(item.getDateTime()) * 1000L).withZone(DateTimeZone.forID(city.getTimeZone()));
             //String date=  new DateTime(Long.parseLong(forecast.getDateTime())*1000l).withZone(DateTimeZone.forID(city.getTimeZone())).dayOfWeek().getAsText();
             String key = String.valueOf(dateTime.getYear()) + dateTime.getMonthOfYear() + dateTime.getDayOfMonth();
 
             if (! forecastMap.containsKey(key)) {
-                dailyForecast = forecast;
+                dailyForecast = item;
                 weather = dailyForecast.getWeather();
                 forecastMap.put(key, dailyForecast);
 
             }
             else {
                 dailyForecast = forecastMap.get(key);
-                if (Double.parseDouble(weather.getTemperature().getMaxTemp()) < Double.parseDouble(forecast.getWeather().getTemperature().getMaxTemp())){
-                    weather.getTemperature().setMaxTemp(forecast.getWeather().getTemperature().getMaxTemp());
+                if (Double.parseDouble(weather.getTemperature().getMaxTemp()) < Double.parseDouble(item.getWeather().getTemperature().getMaxTemp())){
+                    weather.getTemperature().setMaxTemp(item.getWeather().getTemperature().getMaxTemp());
                 }
 
-                if (Double.parseDouble(weather.getTemperature().getMinTemp()) > Double.parseDouble(forecast.getWeather().getTemperature().getMinTemp())){
-                    weather.getTemperature().setMinTemp(forecast.getWeather().getTemperature().getMinTemp());
+                if (Double.parseDouble(weather.getTemperature().getMinTemp()) > Double.parseDouble(item.getWeather().getTemperature().getMinTemp())){
+                    weather.getTemperature().setMinTemp(item.getWeather().getTemperature().getMinTemp());
                 }
 
                 dailyForecast.setWeather(weather);
                 forecastMap.put(key, dailyForecast);
             }
             if (dateTime.getHourOfDay() >= 11 || dateTime.getHourOfDay() <= 2) {
-                weather.setIcon(forecast.getWeather().getIcon());
-                dailyForecast.setDateTime(forecast.getDateTime());
+                weather.setIcon(item.getWeather().getIcon());
+                dailyForecast.setDateTime(item.getDateTime());
                 forecastMap.put(key,dailyForecast);
             }
 
