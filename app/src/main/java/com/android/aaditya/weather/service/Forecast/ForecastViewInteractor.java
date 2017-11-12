@@ -1,4 +1,4 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.service.Forecast;
 
 import com.android.aaditya.weather.base.ViewInteractor;
 import com.android.aaditya.weather.model.City;

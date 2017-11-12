@@ -1,4 +1,4 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,6 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.android.aaditya.weather.adapter.CityRecyclerViewAdapter;
+import com.android.aaditya.weather.service.Forecast.ForecastPresenter;
+import com.android.aaditya.weather.service.Forecast.ForecastPresenterImpl;
+import com.android.aaditya.weather.service.Forecast.ForecastViewInteractor;
+import com.android.aaditya.weather.R;
 import com.android.aaditya.weather.base.BaseActivity;
 import com.android.aaditya.weather.model.City;
 import com.android.aaditya.weather.util.WeatherPreferences;

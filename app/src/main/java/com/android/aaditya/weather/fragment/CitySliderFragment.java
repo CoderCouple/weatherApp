@@ -1,9 +1,8 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.aaditya.weather.adapter.OneDaySummary;
+import com.android.aaditya.weather.R;
+import com.android.aaditya.weather.adapter.TenDaySummary;
+import com.android.aaditya.weather.adapter.OneDaySummaryAdapter;
+import com.android.aaditya.weather.adapter.TenDaySummaryAdapter;
 import com.android.aaditya.weather.base.BaseFragment;
 import com.android.aaditya.weather.model.City;
 import com.android.aaditya.weather.model.Forecast;
@@ -22,17 +26,11 @@ import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.Unbinder;

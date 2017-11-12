@@ -1,4 +1,4 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.adapter;
 
         import android.content.Context;
 

@@ -1,10 +1,11 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.android.aaditya.weather.fragment.CitySliderFragment;
 import com.android.aaditya.weather.model.City;
 import com.google.gson.Gson;
 

@@ -1,4 +1,4 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.aaditya.weather.R;
 import com.android.aaditya.weather.model.City;
 import com.android.aaditya.weather.util.WeatherPreferences;
 import com.daimajia.swipe.SwipeLayout;

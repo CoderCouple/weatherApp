@@ -1,4 +1,4 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.aaditya.weather.Config;
+import com.android.aaditya.weather.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

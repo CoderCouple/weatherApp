@@ -1,10 +1,15 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.android.aaditya.weather.R;
+import com.android.aaditya.weather.activity.CityListActivity;
 import com.android.aaditya.weather.base.BaseActivity;
 import com.android.aaditya.weather.model.City;
+import com.android.aaditya.weather.service.Forecast.ForecastPresenter;
+import com.android.aaditya.weather.service.Forecast.ForecastPresenterImpl;
+import com.android.aaditya.weather.service.Forecast.ForecastViewInteractor;
 import com.android.aaditya.weather.util.WeatherPreferences;
 
 import java.util.HashMap;
@@ -30,6 +35,11 @@ public class SpalshActivity extends BaseActivity implements ForecastViewInteract
         cityList = preferences.readCityList();
 
         cityListSize = cityList.size();
+
+        if (cityListSize == 0) {
+            loadNextActivity();
+            return;
+        }
 
         presenter = new ForecastPresenterImpl();
         presenter.attachViewInteractor(this);
@@ -74,7 +84,12 @@ public class SpalshActivity extends BaseActivity implements ForecastViewInteract
     private void loadNextActivity() {
         preferences.saveCityList(cityList);
 
-        startActivity(CityListActivity.class,null);
-        finish();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(CityListActivity.class,null);
+                finish();
+            }
+        },3000);
     }
 }

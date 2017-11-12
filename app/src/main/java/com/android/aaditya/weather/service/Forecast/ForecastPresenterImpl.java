@@ -1,5 +1,6 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.service.Forecast;
 
+import com.android.aaditya.weather.Config;
 import com.android.aaditya.weather.base.BasePresenter;
 import com.android.aaditya.weather.model.City;
 import com.android.aaditya.weather.model.Forecast;
@@ -24,7 +25,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import timber.log.Timber;
 
 /**
  * Created by aaditya on 10/20/17.

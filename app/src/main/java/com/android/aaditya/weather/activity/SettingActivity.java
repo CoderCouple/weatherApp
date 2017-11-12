@@ -1,10 +1,11 @@
-package com.android.aaditya.weather;
+package com.android.aaditya.weather.activity;
 
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.android.aaditya.weather.R;
 import com.android.aaditya.weather.base.BaseActivity;
 import com.android.aaditya.weather.util.SwitchButton;
 import com.android.aaditya.weather.util.WeatherPreferences;
